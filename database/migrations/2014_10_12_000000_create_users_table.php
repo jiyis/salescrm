@@ -18,9 +18,23 @@ class CreateUsersTable extends Migration
             $table->string('name')->unique();
             $table->string('nickname');
             $table->string('email',100)->unique();
-            $table->string('password',50);
+            $table->string('password',100);
             $table->string('ip', 20);
+            $table->rememberToken();
+            $table->integer('belong_to')->comment('该用户提交的项目提交的审核人');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('admin_users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->unique();
+            $table->string('nickname');
+            $table->string('email',100)->unique();
+            $table->string('password',100);
+            $table->string('ip', 20)->nullable();
             $table->tinyInteger('is_super')->default(0)->comment('是否超级管理员');
+            $table->tinyInteger('status')->default(1)->comment('是否禁用');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

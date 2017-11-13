@@ -16,7 +16,7 @@
             @endif
             <div class="form-group has-feedback">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                <input type="text" name="username" class="form-control" placeholder="请输入用户名" value="{{ old('username') }}">
+                <input type="text" name="username" class="form-control" placeholder="请输入用户名或邮箱" value="{{ old('username') }}">
 
             </div>
             <div class="form-group has-feedback">

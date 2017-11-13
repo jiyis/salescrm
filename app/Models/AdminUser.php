@@ -1,12 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class AdminUser extends Authenticatable
 {
+
     use Notifiable;
 
     /**
@@ -22,20 +23,22 @@ class User extends Authenticatable
         'ip',
         'is_super',
         //'last_login_at',
-        //'status',
+        'status',
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
+
 }

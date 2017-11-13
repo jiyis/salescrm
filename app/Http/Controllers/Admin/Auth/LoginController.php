@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -18,23 +20,28 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    //use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        login as primaryLogin;
+        logout as performLogout;
+    }
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/home';
+    protected $username = 'email';
+    protected $logger;
+
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * LoginController constructor.
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
     }
 
     /**
@@ -44,5 +51,42 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('admin.auth.login');
+    }
+
+    /**
+     * 重写登录方法，兼容email和username登录方式
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        $field = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+        $request->merge([$field => $request->input('username')]);
+
+        $this->username = $field;
+
+        $result =  $this->primaryLogin($request);
+        return $result;
+
+    }
+
+    public function logout(Request $request)
+    {
+        $this->performLogout($request);
+        return redirect('admin/login');
+    }
+
+    /**
+     * 判断登录字段问题
+     * @return string
+     */
+    public function username()
+    {
+        return $this->username;
+    }
+
+    protected function guard()
+    {
+        return Auth::guard('admin');
     }
 }
