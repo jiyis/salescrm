@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\AdminUser;
+use App\Models\Role;
+use App\Services\CommonService;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Repository\AdminUserRepository;
-use App\Services\CommonServices;
 use App\Http\Requests\Admin\CreateAdminUserRequest;
 use App\Http\Requests\Admin\UpdateAdminUserRequest;
+use Breadcrumbs;
 
 class UserController extends Controller
 {
@@ -22,7 +24,7 @@ class UserController extends Controller
             $breadcrumbs->parent('控制台');
             $breadcrumbs->push('用户管理', route('admin.users.index'));
         });
-        view()->share('roles', CommonServices::getRoles());
+        view()->share('roles', CommonService::getRoles());
     }
 
     public function index()
@@ -47,6 +49,7 @@ class UserController extends Controller
             $breadcrumbs->parent('admin-user');
             $breadcrumbs->push('添加用户', route('admin.users.create'));
         });
+        $roles = Role::pluck('display_name', 'id');
         return view('admin.rbac.users.create');
     }
 
@@ -58,6 +61,7 @@ class UserController extends Controller
      */
     public function store(CreateAdminUserRequest $request)
     {
+
         $result = $this->adminUser->create($request->all());
         if(!$result) {
             Toastr::error('新用户添加失败!');
@@ -92,9 +96,8 @@ class UserController extends Controller
         });
 
         $user = $this->adminUser->find($id);
-        //$hasRoles = $user->roles()->lists('id');
-        //dd($user);
-        return view('admin.rbac.users.edit', compact('user'));
+
+        return view('admin.rbac.users.edit', compact('user', 'roles'));
     }
 
     /**

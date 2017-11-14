@@ -34,12 +34,11 @@ jQuery(document).ready(function () {
     $('.select2').select2();
     $('.select2').css('width','100%');
 
-    $('input[class!="my-switch"]').iCheck({
+    $('input[type="checkbox"].square, input[type="radio"].square').iCheck({
         checkboxClass: 'icheckbox_square-blue',
         radioClass: 'iradio_square-blue',
         increaseArea: '20%' // optional
     });
-
 
     $("[data-toggle='tooltip']").tooltip();
 });
@@ -88,7 +87,7 @@ var Rbac = window.Rbac || {};
                         type: 'success',
                         confirmButtonColor: '#8CD4F5',
                         closeOnConfirm: _close
-                    }, function () {
+                    }).then(function(isConfirm) {
                         _successFnc()
                     });
                 } else if (data.status == -1) {
@@ -124,7 +123,7 @@ var Rbac = window.Rbac || {};
                 showCancelButton: true,
                 closeOnConfirm: false,
                 showLoaderOnConfirm: true
-            }, function () {
+            }).then(function(isConfirm) {
                 if (params.type == undefined) {
                     params.type = 'DELETE';
                 }

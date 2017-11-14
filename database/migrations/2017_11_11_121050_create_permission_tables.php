@@ -16,9 +16,12 @@ class CreatePermissionTables extends Migration
 
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('fid')->unsigned()->default(0)->comment('菜单父ID');
+            $table->string('icon')->nullable()->comment('图标class');
             $table->string('name');
             $table->string('display_name')->nullable();
             $table->string('guard_name');
+            $table->tinyInteger('is_menu')->default(0)->comment('是否作为菜单显示,[1|0]');
             $table->tinyInteger('sort')->default(0)->comment('排序');
             $table->timestamps();
         });
