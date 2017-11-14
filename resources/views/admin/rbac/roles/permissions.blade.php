@@ -98,11 +98,7 @@
     @parent
     <script type="text/javascript">
         $(function(){
-            //iCheck for checkbox and radio inputs
-            $('input[type="checkbox"].square, input[type="radio"].square').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue'
-            });
+
             $("#save-role-permissions").click(function (e) {
                 e.preventDefault();
                 Rbac.ajax.request({
