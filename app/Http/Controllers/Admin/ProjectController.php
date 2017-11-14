@@ -2,40 +2,36 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\AdminUser;
-use App\Models\Role;
-use App\Services\CommonService;
 use Illuminate\Http\Request;
-use App\Repository\AdminUserRepository;
+use App\Repository\ProjectRepository;
 use App\Http\Requests\Admin\CreateAdminUserRequest;
 use App\Http\Requests\Admin\UpdateAdminUserRequest;
 use Breadcrumbs, Toastr;
 
-class UserController extends Controller
+class ProjectController extends Controller
 {
-    protected $adminUser;
+    protected $project;
 
-    public function __construct(AdminUserRepository $adminuser)
+    public function __construct(ProjectRepository $project)
     {
         parent::__construct();
-        $this->adminUser = $adminuser;
+        $this->project = $project;
 
-        Breadcrumbs::register('admin-user', function ($breadcrumbs) {
+        Breadcrumbs::register('admin-project', function ($breadcrumbs) {
             $breadcrumbs->parent('控制台');
-            $breadcrumbs->push('用户管理', route('admin.users.index'));
+            $breadcrumbs->push('项目管理', route('admin.project.index'));
         });
-        view()->share('roles', CommonService::getRoles());
     }
 
     public function index()
     {
-        Breadcrumbs::register('admin-user-index', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin-user');
-            $breadcrumbs->push('用户列表', route('admin.users.index'));
+        Breadcrumbs::register('admin-project-index', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin-project');
+            $breadcrumbs->push('项目列表', route('admin.project.index'));
         });
 
-        $users = $this->adminUser->paginate(10);
-        return view('admin.rbac.users.index', compact('users'));
+        $projects = $this->project->paginate(10);
+        return view('admin.project.index', compact('projects'));
     }
 
     /**
@@ -45,12 +41,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        Breadcrumbs::register('admin-user-create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin-user');
-            $breadcrumbs->push('添加用户', route('admin.users.create'));
+        Breadcrumbs::register('admin-project-create', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin-project');
+            $breadcrumbs->push('添加项目', route('admin.project.create'));
         });
-        $roles = Role::pluck('display_name', 'id');
-        return view('admin.rbac.users.create');
+
+        return view('admin.project.create');
     }
 
     /**
@@ -62,13 +58,13 @@ class UserController extends Controller
     public function store(CreateAdminUserRequest $request)
     {
 
-        $result = $this->adminUser->create($request->all());
+        $result = $this->project->create($request->all());
         if(!$result) {
-            Toastr::error('新用户添加失败!');
-            return redirect(route('admin.users.create'));
+            Toastr::error('新项目添加失败!');
+            return redirect(route('admin.project.create'));
         }
-        Toastr::success('新用户添加成功!');
-        return redirect('admin/users');
+        Toastr::success('新项目添加成功!');
+        return redirect('admin/projects');
     }
 
     /**
@@ -90,14 +86,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        Breadcrumbs::register('admin-user-edit', function ($breadcrumbs) use ($id) {
-            $breadcrumbs->parent('admin-user');
-            $breadcrumbs->push('编辑用户', route('admin.users.edit', ['id' => $id]));
+        Breadcrumbs::register('admin-project-edit', function ($breadcrumbs) use ($id) {
+            $breadcrumbs->parent('admin-project');
+            $breadcrumbs->push('编辑项目', route('admin.project.edit', ['id' => $id]));
         });
 
-        $user = $this->adminUser->find($id);
+        $user = $this->project->find($id);
 
-        return view('admin.rbac.users.edit', compact('user', 'roles'));
+        return view('admin.project.edit', compact('user', 'roles'));
     }
 
     /**
@@ -109,23 +105,23 @@ class UserController extends Controller
      */
     public function update(UpdateAdminUserRequest $request, $id)
     {
-        $user = $this->adminUser->findWithoutFail($id);
+        $user = $this->project->findWithoutFail($id);
 
         if (empty($user)) {
-            Toastr::error('用户未找到');
+            Toastr::error('项目未找到');
 
-            return redirect(route('admin.users.index'));
+            return redirect(route('admin.project.index'));
         }
         if($request->get('password') == ''){
             $data = $request->except('password');
         }else{
             $data = $request->all();
         }
-        $user = $this->adminUser->update($data, $id);
+        $user = $this->project->update($data, $id);
 
-        Toastr::success('用户更新成功.');
+        Toastr::success('项目更新成功.');
 
-        return redirect(route('admin.users.index'));
+        return redirect(route('admin.project.index'));
 
     }
 
@@ -137,20 +133,20 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = $this->adminUser->findWithoutFail($id);
+        $user = $this->project->findWithoutFail($id);
         if (empty($user)) {
-            Toastr::error('用户未找到');
+            Toastr::error('项目未找到');
 
             return response()->json(['status' => 0]);
         }
-        $result = $this->adminUser->delete($id);
-        //Toastr::success('用户删除成功');
+        $result = $this->project->delete($id);
+        //Toastr::success('项目删除成功');
 
         return response()->json($result ? ['status' => 1] : ['status' => 0]);
     }
 
     /**
-     * Delete multi users
+     * Delete multi projects
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -161,7 +157,7 @@ class UserController extends Controller
         }
 
         foreach($ids as $id){
-            $result = $this->adminUser->delete($id);
+            $result = $this->project->delete($id);
         }
         return response()->json($result ? ['status' => 1] : ['status' => 0]);
     }

@@ -27,7 +27,7 @@ jQuery(document).ready(function () {
         autoWidth: true,
         //"bPaginate": false,
         language: {
-            url: '/assets/language/datatables-zh.json'
+            url: '/language/datatables-zh.json'
         },
     });
     

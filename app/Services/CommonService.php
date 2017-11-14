@@ -12,6 +12,9 @@ namespace App\Services;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
+use Auth;
 
 class CommonService
 {
@@ -22,7 +25,6 @@ class CommonService
         foreach ($allRoles as $role) {
             $arr[$role['id']] = $role['display_name'];
         }
-        $arr = [1=>'sad'];
         return $arr;
     }
 
@@ -47,6 +49,7 @@ class CommonService
         //获取当前的路由控制器部分
         $current_route = Request::route()->getName();
         $curRoutes = explode('.', $current_route);
+
         $curRoutes = $curRoutes[1];
         $fmenus = Permission::where('fid', 0)->where('is_menu', 1)->orderBy('sort', 'asc')->orderBy('id', 'asc')->get()->toArray();
         $token = '';
@@ -56,11 +59,7 @@ class CommonService
                 if(($item['name'] !== '#' && $item['name'] !== '##') && !Route::has($item['name'])) {
                     continue;
                 }
-                if($hidewx){
-                    if(str_contains($item['name'], 'wxadm') || $item['name'] == '##') continue;
-                }else{
-                    if(!str_contains($item['name'], 'wxadm') && $item['name'] != '##') continue;
-                }
+
                 if($item['name'] == '##') $item['name'] = '#';
                 $class = '';
                 if($item['name'] == Route::currentRouteName()) {
@@ -84,16 +83,8 @@ class CommonService
                             /*if(stripos($sub['name'],'.*')){
                                 $sub['name'] = str_replace('.*','.index',$sub['name']);
                             }*/
-                            if($sub['name'] !== '#' && !Route::has($sub['name'])) {
-                                continue;
-                            }
-                            if($sub['name'] == '#'){
-                                $suburl = '#';
-                            }else{
-                                $suburl = empty($token) ? route($sub['name']) : route($sub['name'],$token);
-                            }
-                            $sub['href'] = ($sub['name'] == '#') ? '#' : $suburl;
-                            $sub['icon'] = $sub['icon_html'] ? $sub['icon_html'] : '<i class="fa fa-caret-right"></i>';
+                            $sub['href'] = route($sub['name']);
+                            $sub['icon'] = $sub['icon_html'] ? $sub['icon_html'] : '<i class="fa fa-circle-o"></i>';
                             $sub['class'] = '';
                             if(str_contains($sub['name'],$curRoutes)) {
                                 $sub['class'] = 'active';

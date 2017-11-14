@@ -11,6 +11,7 @@ class AdminUser extends Authenticatable
 {
     use Notifiable, HasRoles, SoftDeletes;
 
+
     /**
      * The attributes that are mass assignable.
      *

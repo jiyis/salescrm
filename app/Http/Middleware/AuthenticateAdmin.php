@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-//use App\Repository\LogRepository;
-//use App\Repository\OperationLogRepository;
+use App\Repository\LogRepository;
+use App\Repository\OperationLogRepository;
 use Closure;
 use Route,URL,Auth;
 
@@ -13,11 +13,11 @@ class AuthenticateAdmin
     private $logger;
     private $guard = 'admin';
 
-    /*public function __construct(OperationLogRepository $logger)
+    public function __construct(OperationLogRepository $logger)
     {
         $this->logger = $logger;
         $this->guard = 'admin';
-    }*/
+    }
 
     /**
      * Handle an incoming request.
@@ -33,7 +33,7 @@ class AuthenticateAdmin
         }
 
         if(Auth::guard($this->guard)->user()->is_super){
-            //$this->log($request);
+            $this->log($request);
             return $next($request);
         }
 
@@ -52,13 +52,13 @@ class AuthenticateAdmin
 
         $response = $next($request);
         //验证成功了，记录用户操作日志，主要是看当前请求了哪个页面。
-        //$this->log($request);
+        $this->log($request);
         return $response;
     }
 
     private function log($request)
     {
-        //if($request->method() == 'GET') return;
+        if($request->method() == 'GET') return;
         $route = Route::current()->getActionName();
         list($class, $action) = explode('@', $route);
 

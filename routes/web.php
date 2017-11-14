@@ -36,4 +36,13 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::resource('permission', 'PermissionController');
     Route::post('permission/destroyall', ['as' => 'permission.destroy.all', 'uses' => 'PermissionController@destroyAll']);
 
+    //日志管理
+    Route::get('operation/log',['as'=>'operationlog.index','uses'=>'LogController@operationLog']);
+    Route::get('operation/ajax',['as'=>'operationlog.ajax','uses'=>'LogController@ajaxOperationLog']);
+    Route::get('logs/index',['as'=>'logs.index','uses'=>'LogController@logs']);
+    Route::get('logs/ajax',['as'=>'logs.ajax','uses'=>'LogController@ajaxLogs']);
+
+    //项目管理
+    Route::resource('project', 'ProjectController');
+
 });
