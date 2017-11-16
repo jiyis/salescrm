@@ -10,5 +10,5 @@ class Project extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ['fid', 'icon', 'name', 'display_name', 'description', 'is_menu', 'sort', 'guard_name'];
+    protected $fillable = ['category', 'city', 'name', 'business', 'manager', 'model', 'num', 'camera','power','delivery_time','remarks','report', 'report_time', 'files'];
 }

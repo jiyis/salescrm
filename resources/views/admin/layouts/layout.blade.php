@@ -29,7 +29,7 @@
         <link rel="stylesheet" href="/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
         <!-- bootstrap wysihtml5 - text editor -->
         <link rel="stylesheet" href="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-        <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+        <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
         <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
             <link rel="stylesheet" href="/plugins/iCheck/all.css">
         <link rel="stylesheet" href="/plugins/sweetalert/sweetalert.css">
@@ -96,12 +96,10 @@
     <script src="/bower_components/select2/dist/js/select2.full.min.js"></script>
     <script src="/plugins/iCheck/icheck.min.js"></script>
     <script src="/plugins/sweetalert/sweetalert.min.js"></script>
-    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
     <!-- AdminLTE App -->
     <script src="/dist/js/adminlte.min.js"></script>
 
-    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="/plugins/toastr/toastr.min.js"></script>
     <script src="/js/common.js"></script>
 
     {!! Toastr::message() !!}

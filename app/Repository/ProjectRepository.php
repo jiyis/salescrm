@@ -21,4 +21,10 @@ class ProjectRepository extends BaseRepository
         return Project::class;
     }
 
+    public function create(array $attributes)
+    {
+        $attributes['user_id'] = auth()->user()->id;
+        return parent::create($attributes);
+    }
+
 }

@@ -30,9 +30,9 @@
                                 <th>项目名称</th>
                                 <th>集成商</th>
                                 <th>负责人</th>
-                                <th>型号</th>
+                                <th>型号/数量</th>
                                 <th>镜头</th>
-                                <th>数量</th>
+                                <th>镜头数量</th>
                                 <th>把握度</th>
                                 <th>交货日期</th>
                                 <th>备注</th>
@@ -48,7 +48,7 @@
                                             <input type="checkbox" class="square selectall-item" name="id" id="id-{{ $project->id }}" value="{{ $project->id }}" />
                                         </label>
                                     </td>
-                                    <td>{{ $project->category }}</td>
+                                    <td>{{ config('custom.category')[$project->category] }}</td>
                                     <td>{{ $project->city }}</td>
                                     <td>{{ $project->name }}</td>
                                     <td>{{ $project->business }}</td>
@@ -56,7 +56,7 @@
                                     <td>{{ $project->model }}</td>
                                     <td>{{ $project->num }}</td>
                                     <td>{{ $project->camera }}</td>
-                                    <td>{{ $project->power }}</td>
+                                    <td>{{ config('custom.power')[$project->power] }}</td>
                                     <td>{{ $project->delivery_time }}</td>
                                     <td>{{ $project->remarks }}</td>
                                     <td>{{ $project->review_status }}</td>

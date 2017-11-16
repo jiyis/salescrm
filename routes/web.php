@@ -45,4 +45,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     //项目管理
     Route::resource('project', 'ProjectController');
 
+    //上传图片
+    Route::post('upload/uploadFile','UploadController@uploadFile')->name('upload.uploadfile');
+    Route::post('upload/uploadImage','UploadController@uploadImage')->name("upload.uploadimage");
+    Route::post('upload/deleteFile','UploadController@deleteFile')->name("upload.deletefile");
+
+
 });

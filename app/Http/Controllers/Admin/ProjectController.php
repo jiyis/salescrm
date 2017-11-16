@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\CreateProjectRequest;
+use App\Http\Requests\Admin\UpdateProjectRequest;
 use Illuminate\Http\Request;
 use App\Repository\ProjectRepository;
-use App\Http\Requests\Admin\CreateAdminUserRequest;
-use App\Http\Requests\Admin\UpdateAdminUserRequest;
 use Breadcrumbs, Toastr;
 
 class ProjectController extends Controller
@@ -55,16 +55,16 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateAdminUserRequest $request)
+    public function store(CreateProjectRequest $request)
     {
-
         $result = $this->project->create($request->all());
+
         if(!$result) {
             Toastr::error('新项目添加失败!');
             return redirect(route('admin.project.create'));
         }
         Toastr::success('新项目添加成功!');
-        return redirect('admin/projects');
+        return redirect('admin/project');
     }
 
     /**
@@ -103,7 +103,7 @@ class ProjectController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAdminUserRequest $request, $id)
+    public function update(UpdateProjectRequest $request, $id)
     {
         $user = $this->project->findWithoutFail($id);
 
