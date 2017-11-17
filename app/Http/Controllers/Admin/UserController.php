@@ -49,7 +49,7 @@ class UserController extends Controller
             $breadcrumbs->parent('admin-user');
             $breadcrumbs->push('添加用户', route('admin.users.create'));
         });
-        $roles = Role::pluck('display_name', 'id');
+        $roles = Role::pluck('display_name', 'name');
         return view('admin.rbac.users.create');
     }
 
@@ -61,7 +61,6 @@ class UserController extends Controller
      */
     public function store(CreateAdminUserRequest $request)
     {
-
         $result = $this->adminUser->create($request->all());
         if(!$result) {
             Toastr::error('新用户添加失败!');

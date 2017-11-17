@@ -45,10 +45,25 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     //项目管理
     Route::resource('project', 'ProjectController');
 
+
     //上传图片
     Route::post('upload/uploadFile','UploadController@uploadFile')->name('upload.uploadfile');
     Route::post('upload/uploadImage','UploadController@uploadImage')->name("upload.uploadimage");
     Route::post('upload/deleteFile','UploadController@deleteFile')->name("upload.deletefile");
 
+    //客户列表
+    Route::resource('member', 'MemberController');
+
+
+});
+
+
+Route::auth();
+
+Route::group(['namespace' => 'Index', 'middleware' => 'auth:web'], function () {
+    Route::resource('project', 'ProjectController');
+    Route::post('project/publish/{id}', ['as'=>'project.publish','uses'=>'ProjectController@publish']);
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
 
 });

@@ -1,8 +1,8 @@
-@extends('admin.layouts.layout')
+@extends('index.layouts.layout')
 
 @section('content')
     <section class="content-header">
-        {!! Breadcrumbs::render('admin-project-index') !!}
+        {!! Breadcrumbs::render('index-project-index') !!}
     </section>
 
     <!-- Main content -->
@@ -14,7 +14,7 @@
                     <div class="box-header with-border">
                         <i class="fa fa-bar-chart-o"></i>
                         <h3 class="box-title">项目列表</h3>
-                        <a href="{{ route('admin.project.create') }}" class="btn btn-primary header-btn">新增项目</a>
+                        <a href="{{ route('project.create') }}" class="btn btn-primary header-btn">新增项目</a>
                     </div>
                     <div class="box-body">
                         <table class="table table-bordered table-striped datatable">

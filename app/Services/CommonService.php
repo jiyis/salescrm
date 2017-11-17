@@ -20,10 +20,10 @@ class CommonService
 {
     public static function getRoles()
     {
-        $allRoles = Role::get(['id','display_name']);
+        $allRoles = Role::get(['name','display_name']);
         $arr = [];
         foreach ($allRoles as $role) {
-            $arr[$role['id']] = $role['display_name'];
+            $arr[$role['name']] = $role['display_name'];
         }
         return $arr;
     }
@@ -33,7 +33,7 @@ class CommonService
         $topPermissions = Permission::where('fid', 0)->orderBy('sort', 'asc')->orderBy('id', 'asc')->get();
         $arr = [];
         foreach ($topPermissions as $topPermission) {
-            $arr[$topPermission['id']] = $topPermission['display_name'] . '[' . $topPermission->name . ']';
+            $arr[$topPermission['name']] = $topPermission['display_name'] . '[' . $topPermission->name . ']';
         }
         $arr[0] = '--顶级权限--';
         return $arr;

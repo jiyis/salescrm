@@ -31,7 +31,8 @@ class CreateProjectTables extends Migration
             $table->tinyInteger('review_status')->nullable()->comment('报备审核状态，0:失败 1:成功');
             $table->string('review_time', 30)->comment("反馈时间")->nullable();
             $table->string('files')->comment("项目图片")->nullable();
-            $table->string('user_id')->comment("项目归属人");
+            $table->string('belong_user_id')->comment("项目归属人");
+            //$table->string('check_user_id')->comment("项目隶属审核人");
             $table->timestamps();
             $table->softDeletes();
         });

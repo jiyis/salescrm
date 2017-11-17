@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Index;
 
 use App\Http\Requests\Admin\CreateProjectRequest;
 use App\Http\Requests\Admin\UpdateProjectRequest;
 use Illuminate\Http\Request;
 use App\Repository\ProjectRepository;
 use Breadcrumbs, Toastr;
+use App\Http\Controllers\Controller;
 
 class ProjectController extends Controller
 {
@@ -17,21 +18,20 @@ class ProjectController extends Controller
         parent::__construct();
         $this->project = $project;
 
-        Breadcrumbs::register('admin-project', function ($breadcrumbs) {
-            $breadcrumbs->parent('控制台');
+        Breadcrumbs::register('index-project', function ($breadcrumbs) {
             $breadcrumbs->push('项目管理', route('project.index'));
         });
     }
 
     public function index()
     {
-        Breadcrumbs::register('admin-project-index', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin-project');
+        Breadcrumbs::register('index-project-index', function ($breadcrumbs) {
+            $breadcrumbs->parent('index-project');
             $breadcrumbs->push('项目列表', route('project.index'));
         });
 
         $projects = $this->project->paginate(10);
-        return view('admin.project.index', compact('projects'));
+        return view('index.project.index', compact('projects'));
     }
 
     /**
@@ -41,12 +41,12 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        Breadcrumbs::register('admin-project-create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin-project');
+        Breadcrumbs::register('index-project-create', function ($breadcrumbs) {
+            $breadcrumbs->parent('index-project');
             $breadcrumbs->push('添加项目', route('project.create'));
         });
 
-        return view('admin.project.create');
+        return view('index.project.create');
     }
 
     /**
@@ -57,14 +57,14 @@ class ProjectController extends Controller
      */
     public function store(CreateProjectRequest $request)
     {
-        $result = $this->project->create($request->all());
+        $result = $this->project->create($request->all(), 'web');
 
         if(!$result) {
             Toastr::error('新项目添加失败!');
             return redirect(route('project.create'));
         }
         Toastr::success('新项目添加成功!');
-        return redirect('admin/project');
+        return redirect('project');
     }
 
     /**
@@ -86,14 +86,14 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        Breadcrumbs::register('admin-project-edit', function ($breadcrumbs) use ($id) {
-            $breadcrumbs->parent('admin-project');
+        Breadcrumbs::register('index-project-edit', function ($breadcrumbs) use ($id) {
+            $breadcrumbs->parent('index-project');
             $breadcrumbs->push('编辑项目', route('project.edit', ['id' => $id]));
         });
 
-        $project = $this->project->find($id);
+        $user = $this->project->find($id);
 
-        return view('admin.project.edit', compact('project', 'roles'));
+        return view('index.project.edit', compact('user', 'roles'));
     }
 
     /**
@@ -105,9 +105,9 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, $id)
     {
-        $project = $this->project->findWithoutFail($id);
+        $user = $this->project->findWithoutFail($id);
 
-        if (empty($project)) {
+        if (empty($user)) {
             Toastr::error('项目未找到');
 
             return redirect(route('project.index'));
@@ -117,7 +117,7 @@ class ProjectController extends Controller
         }else{
             $data = $request->all();
         }
-        $project = $this->project->update($data, $id);
+        $user = $this->project->update($data, $id);
 
         Toastr::success('项目更新成功.');
 
@@ -133,8 +133,8 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $project = $this->project->findWithoutFail($id);
-        if (empty($project)) {
+        $user = $this->project->findWithoutFail($id);
+        if (empty($user)) {
             Toastr::error('项目未找到');
 
             return response()->json(['status' => 0]);
@@ -160,5 +160,24 @@ class ProjectController extends Controller
             $result = $this->project->delete($id);
         }
         return response()->json($result ? ['status' => 1] : ['status' => 0]);
+    }
+
+    /**
+     * 报备项目
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function publish(Request $request, $id)
+    {
+        $project = $this->project->findWithoutFail($id);
+
+        if(empty($project)) {
+            Toastr::error('项目未找到');
+            return response()->json(['status' => 0]);
+        }
+        $res = $this->project->update(['report' => 1, 'report_time' => time()], $id);
+
+        return response()->json($res ? ['status' => 1] : ['status' => 0]);
     }
 }

@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="content-header">
-        {!! Breadcrumbs::render('admin-project-edit') !!}
+        {!! Breadcrumbs::render('admin-member-edit') !!}
     </section>
     <!-- Main content -->
     <section class="content">
@@ -10,9 +10,9 @@
         <div class="row">
             <div class="col-md-12">
 
-                {!! Form::model($project, ['route' => ['admin.project.update', $project],'class' => '', 'method' => 'patch', 'files' => true ]) !!}
+                {!! Form::model($member, ['route' => ['admin.member.update', $member],'class' => '', 'method' => 'patch', 'files' => true ]) !!}
 
-                @include('admin.project.fields')
+                @include('admin.member.fields')
 
                 {!! Form::close() !!}
             </div>
