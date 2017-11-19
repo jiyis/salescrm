@@ -45,8 +45,8 @@ class RoleRepository extends BaseRepository
     public function savePermissions($id, $perms = [])
     {
         $role = $this->model->find($id);
-        dd($perms);
-        $result = $role->givePermissionTo($perms);
+        $role->permissions()->sync($perms);
+        //$result = $role->givePermissionTo($perms);
         //$role->perms()->sync($perms);
 
         return true;

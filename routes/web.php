@@ -44,6 +44,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
 
     //项目管理
     Route::resource('project', 'ProjectController');
+    Route::get('project/check/{id}',['as'=>'project.check','uses'=>'ProjectController@checkEdit']);
+    Route::post('project/check/{id}',['as'=>'project.result','uses'=>'ProjectController@check']);
 
 
     //上传图片
@@ -54,6 +56,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     //客户列表
     Route::resource('member', 'MemberController');
 
+    //下载上传附件
+    Route::get('project/download/{id}','ProjectController@download')->name("project.download");
+
 
 });
 
@@ -62,8 +67,15 @@ Route::auth();
 
 Route::group(['namespace' => 'Index', 'middleware' => 'auth:web'], function () {
     Route::resource('project', 'ProjectController');
+    Route::get('project/upload/{id}',['as'=>'project.uploadEdit','uses'=>'ProjectController@uploadEdit']);
+    Route::post('project/upload/{id}',['as'=>'project.upload','uses'=>'ProjectController@upload']);
     Route::post('project/publish/{id}', ['as'=>'project.publish','uses'=>'ProjectController@publish']);
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/home', 'HomeController@index')->name('home');
+
+    //上传图片
+    Route::post('upload/uploadFile','UploadController@uploadFile')->name('upload.uploadfile');
+    Route::post('upload/uploadImage','UploadController@uploadImage')->name("upload.uploadimage");
+    Route::post('upload/deleteFile','UploadController@deleteFile')->name("upload.deletefile");
 
 });

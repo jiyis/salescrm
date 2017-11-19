@@ -19,7 +19,7 @@ class ProjectController extends Controller
 
         Breadcrumbs::register('admin-project', function ($breadcrumbs) {
             $breadcrumbs->parent('控制台');
-            $breadcrumbs->push('项目管理', route('project.index'));
+            $breadcrumbs->push('项目管理', route('admin.project.index'));
         });
     }
 
@@ -27,7 +27,7 @@ class ProjectController extends Controller
     {
         Breadcrumbs::register('admin-project-index', function ($breadcrumbs) {
             $breadcrumbs->parent('admin-project');
-            $breadcrumbs->push('项目列表', route('project.index'));
+            $breadcrumbs->push('项目列表', route('admin.project.index'));
         });
 
         $projects = $this->project->paginate(10);
@@ -43,7 +43,7 @@ class ProjectController extends Controller
     {
         Breadcrumbs::register('admin-project-create', function ($breadcrumbs) {
             $breadcrumbs->parent('admin-project');
-            $breadcrumbs->push('添加项目', route('project.create'));
+            $breadcrumbs->push('添加项目', route('admin.project.create'));
         });
 
         return view('admin.project.create');
@@ -61,7 +61,7 @@ class ProjectController extends Controller
 
         if(!$result) {
             Toastr::error('新项目添加失败!');
-            return redirect(route('project.create'));
+            return redirect(route('admin.project.create'));
         }
         Toastr::success('新项目添加成功!');
         return redirect('admin/project');
@@ -75,7 +75,46 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //
+        Breadcrumbs::register('admin-project-edit', function ($breadcrumbs) use ($id) {
+            $breadcrumbs->parent('admin-project');
+            $breadcrumbs->push('审核项目', route('admin.project.check', ['id' => $id]));
+        });
+
+        $project = $this->project->find($id);
+
+        return view('admin.project.show');
+    }
+
+    public function checkEdit($id)
+    {
+        Breadcrumbs::register('admin-project-check', function ($breadcrumbs) use ($id) {
+            $breadcrumbs->parent('admin-project');
+            $breadcrumbs->push('审核项目', route('admin.project.check', ['id' => $id]));
+        });
+
+        $project = $this->project->find($id);
+
+        return view('admin.project.check', compact('project'));
+    }
+
+    public function check(Request $request, $id)
+    {
+
+        $project = $this->project->findWithoutFail($id);
+
+        if (empty($project)) {
+            Toastr::error('项目未找到');
+
+            return redirect(route('admin.project.index'));
+        }
+        
+        $project->review_status = $request->input('review_status', 0);
+        $project->review_time = date('Y-m-d', time());
+        $project->save();
+
+        Toastr::success('项目审核成功.');
+
+        return redirect(route('admin.project.index'));
     }
 
     /**
@@ -88,7 +127,7 @@ class ProjectController extends Controller
     {
         Breadcrumbs::register('admin-project-edit', function ($breadcrumbs) use ($id) {
             $breadcrumbs->parent('admin-project');
-            $breadcrumbs->push('编辑项目', route('project.edit', ['id' => $id]));
+            $breadcrumbs->push('编辑项目', route('admin.project.edit', ['id' => $id]));
         });
 
         $project = $this->project->find($id);
@@ -110,7 +149,7 @@ class ProjectController extends Controller
         if (empty($project)) {
             Toastr::error('项目未找到');
 
-            return redirect(route('project.index'));
+            return redirect(route('admin.project.index'));
         }
         if($request->get('password') == ''){
             $data = $request->except('password');
@@ -121,7 +160,7 @@ class ProjectController extends Controller
 
         Toastr::success('项目更新成功.');
 
-        return redirect(route('project.index'));
+        return redirect(route('admin.project.index'));
 
     }
 
@@ -160,5 +199,30 @@ class ProjectController extends Controller
             $result = $this->project->delete($id);
         }
         return response()->json($result ? ['status' => 1] : ['status' => 0]);
+    }
+
+    /**
+     * 下载附件
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function download(Request $request, $id) {
+
+        $project = $this->project->findWithoutFail($id);
+
+        if (empty($project)) {
+            Toastr::error('项目未找到');
+
+            return redirect(route('admin.project.index'));
+        }
+
+        $file = storage_path('app/public/'.$project->files);
+        if(file_exists($file)){
+            return response()->download($file,date('Y',time()).'项目'.$project->name.'.'.pathinfo($file)['extension']);
+        }
+        Toastr::error('项目未找到');
+
+        return redirect(route('admin.project.index'));
     }
 }

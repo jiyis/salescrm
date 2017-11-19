@@ -31,9 +31,10 @@ class CommonService
     public static function getTopPermissions()
     {
         $topPermissions = Permission::where('fid', 0)->orderBy('sort', 'asc')->orderBy('id', 'asc')->get();
+
         $arr = [];
         foreach ($topPermissions as $topPermission) {
-            $arr[$topPermission['name']] = $topPermission['display_name'] . '[' . $topPermission->name . ']';
+            $arr[$topPermission->id] = $topPermission['display_name'] . '[' . $topPermission->name . ']';
         }
         $arr[0] = '--顶级权限--';
         return $arr;
@@ -51,11 +52,12 @@ class CommonService
         $curRoutes = explode('.', $current_route);
 
         $curRoutes = $curRoutes[1];
-        $fmenus = Permission::where('fid', 0)->where('is_menu', 1)->orderBy('sort', 'asc')->orderBy('id', 'asc')->get()->toArray();
-        $token = '';
-        if($token = Request::get('token')) $token = ['token' => $token];
+        $fmenus = Permission::where('fid', 0)->where('is_menu', 1)->orderBy('sort', 'asc')->orderBy('id', 'asc')->get();
+
         if(!empty($fmenus)){
             foreach ($fmenus as $item) {
+                $originName = $item->getOriginal()['name'];
+                $item = $item->toArray();
                 if(($item['name'] !== '#' && $item['name'] !== '##') && !Route::has($item['name'])) {
                     continue;
                 }
@@ -66,14 +68,14 @@ class CommonService
                     $class= 'active';
                 }
 
-                if(!Auth::guard('admin')->user()->is_super && !Auth::guard('admin')->user()->can($item['name'])){
+                if(!Auth::guard('admin')->user()->is_super && !Auth::guard('admin')->user()->can($originName)){
                     $class = 'hide';
                 }
                 $item['class'] = $class;
                 if($item['name'] == '#'){
                     $url = '#';
                 }else{
-                    $url = empty($token) ? route($item['name']) : route($item['name'],$token);
+                    $url = route($item['name']);
                 }
                 $item['href'] =  ($item['name'] == '#') ? '#' : $url;
 

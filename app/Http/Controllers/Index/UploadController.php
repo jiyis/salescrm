@@ -6,10 +6,11 @@
  * Time: 17:02
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Index;
 
 use Illuminate\Http\Request;
 use App\Services\UploadManager;
+use App\Http\Controllers\Controller;
 use File;
 
 class UploadController extends Controller

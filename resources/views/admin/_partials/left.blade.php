@@ -31,7 +31,7 @@
                 @if(($menu['name'] !== '#') && !Route::has($menu['name']))
                     @continue
                 @endif
-                <li class="{{ $menu['class'] }} treeview">
+                <li class="{{ $menu['class'] }} {{ isset($menu['sub']) ? "treeview" : "" }}">
                     <a href="{{ $menu['href'] }}">
                         {!! $menu['icon_html'] !!}  <span>{{ $menu['display_name'] }}</span>
                         @if(isset($menu['sub']))

@@ -13,7 +13,7 @@ class CreateMemberRequest extends Request
         return [
             'name' => 'required|max:20|alpha_dash',
             'nickname' => 'string|max:50',
-            'email' => 'email|unique:admin_users',
+            'email' => 'email|unique:users',
             'password' => 'sometimes|max:20',
             'category'     => [
                 'required',

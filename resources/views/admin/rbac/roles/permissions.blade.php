@@ -38,11 +38,11 @@
                             </a>
                             @if(in_array($permission['id'],array_keys($rolePermissions)))
                                 <label>
-                                    <input type="checkbox"  name="permissions[]" class="square top-permission-checkbox" value="{{ $permission->getOriginal()['name'] }}" checked/>
+                                    <input type="checkbox"  name="permissions[]" class="square top-permission-checkbox" value="{{ $permission->id }}" checked/>
                                 </label>
                             @else
                                 <label>
-                                    <input type="checkbox"  name="permissions[]" class="square top-permission-checkbox" value="{{ $permission->getOriginal()['name'] }}"/>
+                                    <input type="checkbox"  name="permissions[]" class="square top-permission-checkbox" value="{{ $permission->id }}"/>
                                 </label>
                             @endif
                             <label><h5>&nbsp;&nbsp;{{ $permission['display_name'] }}</h5></label>
@@ -54,14 +54,14 @@
                                             @if($sub['is_menu'])
                                                 <label>
                                                     <input type="checkbox" name="permissions[]"
-                                                              value="{{ $sub->getOriginal()['name'] }}"
+                                                              value="{{ $sub->id }}"
                                                               class="square sub-permission-checkbox" {{ in_array($sub['id'],array_keys($rolePermissions)) ? 'checked':'' }}/>&nbsp;&nbsp;<span
                                                             class="fa fa-bars"></span>{{ $sub['display_name'] }}
                                                 </label>
                                             @else
                                                 <label>
                                                     <input type="checkbox" name="permissions[]"
-                                                              value="{{ $sub->getOriginal()['name'] }}"
+                                                              value="{{ $sub->id }}"
                                                               class="square sub-permission-checkbox" {{ in_array($sub['id'],array_keys($rolePermissions)) ? 'checked':'' }}/>&nbsp;&nbsp;{{ $sub['display_name'] }}
                                                 </label>
                                             @endif

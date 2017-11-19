@@ -11,11 +11,13 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
+                    @if(!Auth::guard('admin')->user()->hasRole('checker'))
                     <div class="box-header with-border">
                         <i class="fa fa-bar-chart-o"></i>
                         <h3 class="box-title">项目列表</h3>
                         <a href="{{ route('admin.project.create') }}" class="btn btn-primary header-btn">新增项目</a>
                     </div>
+                    @endif
                     <div class="box-body">
                         <table class="table table-bordered table-striped datatable">
                             <thead>
@@ -60,13 +62,22 @@
                                     <td>{{ config('custom.power')[$project->power] }}</td>
                                     <td>{{ $project->delivery_time }}</td>
                                     <!--<td>{{ $project->remarks }}</td>-->
-                                    <td>{{ $project->review_status }}</td>
+                                    <td>{!! $project->review_status ? '<span class="label label-success">通过</span>' : '<span class="label label-danger">未通过</span>' !!}</td>
                                     <td>{{ $project->review_time }}</td>
                                     <td>
+                                        @if(!Auth::guard('admin')->user()->hasRole('checker'))
                                         <a class="btn {{ $project->report ? "btn-warning" : "btn-success" }} btn-xs publish-btn" {{ $project->report ? "disabled" : "" }} onclick="{{ $project->report ? "#" : "publish({$project->id})" }}"><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ $project->report ? "已报备" : "报备" }}</a>
-                                        <a href="{{ route('admin.project.edit',['id'=>$project->id]) }}" class="btn btn-white btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
+                                            @if(!$project->report)
+                                                <a href="{{ route('admin.project.edit',['id'=>$project->id]) }}" class="btn btn-white btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
 
-                                        <a class="btn btn-danger btn-xs user-delete" data-href="{{ route('admin.project.destroy',['id'=>$project->id]) }}"><i class="fa fa-trash-o"></i> 删除</a>
+                                                <a class="btn btn-danger btn-xs user-delete" data-href="{{ route('admin.project.destroy',['id'=>$project->id]) }}"><i class="fa fa-trash-o"></i> 删除</a>
+                                            @endif
+                                        @else
+                                         <a href="{{ route('admin.project.check',['id'=>$project->id]) }}" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> 审核</a>
+                                        @endif
+                                        @if($project->files)
+                                                <a href="{{ route('admin.project.download',['id'=>$project->id]) }}" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> 下载图片</a>
+                                        @endif
                                     </td>                                    
                                 </tr>
                             @endforeach
@@ -105,5 +116,7 @@
                 }
             });
         }
+
+
     </script>
 @endsection

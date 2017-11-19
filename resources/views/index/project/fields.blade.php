@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <!-- 项目审核成功后方可上传，只能上传图片压缩包' -->
-                    <div class="form-group">
+                    <div class="form-group hide">
                         {!! Form::label('files', '图片打包上传',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-6">
                             <div id="project-files" class="dropzone dropzone-pic" ></div>

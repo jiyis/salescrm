@@ -17,7 +17,7 @@ class ProjectCriteria implements CriteriaInterface
             $model = $model->where('belong_user_id', Auth::guard('web')->user()->id);
         } elseif(Auth::guard('admin')->user()->hasRole('checker')) {  //如果后台是审核人登录，只能查看自己所管理的客户的
             $user_id = User::where(['belong_to' => Auth::guard('admin')->user()->id])->get();
-            $model = $model->whereIn('belong_user_id',$user_id->pluck('id')->toArray());
+            $model = $model->where('report', 1)->whereIn('belong_user_id',$user_id->pluck('id')->toArray());
         } else {
             
         }

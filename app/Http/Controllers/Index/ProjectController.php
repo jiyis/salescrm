@@ -91,9 +91,15 @@ class ProjectController extends Controller
             $breadcrumbs->push('编辑项目', route('project.edit', ['id' => $id]));
         });
 
-        $user = $this->project->find($id);
+        $project = $this->project->find($id);
 
-        return view('index.project.edit', compact('user', 'roles'));
+        if($project->report == 1) {
+            Toastr::error('项目不存在');
+
+            return redirect(route('admin.project.index'));
+        }
+
+        return view('index.project.edit', compact('project'));
     }
 
     /**
@@ -105,19 +111,20 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, $id)
     {
-        $user = $this->project->findWithoutFail($id);
+        $project = $this->project->findWithoutFail($id);
 
-        if (empty($user)) {
+        if (empty($project)) {
             Toastr::error('项目未找到');
 
             return redirect(route('project.index'));
         }
-        if($request->get('password') == ''){
-            $data = $request->except('password');
-        }else{
-            $data = $request->all();
+        if($project->report == 1) {
+            Toastr::error('项目不存在');
+
+            return redirect(route('admin.project.index'));
         }
-        $user = $this->project->update($data, $id);
+        $data = $request->all();
+        $project = $this->project->update($data, $id);
 
         Toastr::success('项目更新成功.');
 
@@ -133,8 +140,8 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $user = $this->project->findWithoutFail($id);
-        if (empty($user)) {
+        $project = $this->project->findWithoutFail($id);
+        if (empty($project)) {
             Toastr::error('项目未找到');
 
             return response()->json(['status' => 0]);
@@ -179,5 +186,45 @@ class ProjectController extends Controller
         $res = $this->project->update(['report' => 1, 'report_time' => time()], $id);
 
         return response()->json($res ? ['status' => 1] : ['status' => 0]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function uploadEdit(Request $request, $id)
+    {
+        Breadcrumbs::register('index-project-upload', function ($breadcrumbs) use ($id) {
+            $breadcrumbs->parent('index-project');
+            $breadcrumbs->push('编辑项目', route('project.upload', ['id' => $id]));
+        });
+
+        $project = $this->project->find($id);
+
+        return view('index.project.upload', compact('project'));
+    }
+
+    /**
+     * 项目审核成功后上传图片
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function upload(Request $request, $id)
+    {
+        $project = $this->project->findWithoutFail($id);
+
+        if(empty($project)) {
+            Toastr::error('项目未找到');
+            return redirect(route('project.index'));
+        }
+
+        $project->files = $request->input('files');
+        $project->save();
+        Toastr::success('项目图片上传成功.');
+
+        return redirect(route('project.index'));
+
     }
 }

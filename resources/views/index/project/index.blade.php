@@ -60,14 +60,19 @@
                                     <td>{{ config('custom.power')[$project->power] }}</td>
                                     <td>{{ $project->delivery_time }}</td>
                                     <!--<td>{{ $project->remarks }}</td>-->
-                                    <td>{{ $project->review_status }}</td>
+                                    <td>{!! $project->review_status ? '<span class="label label-success">通过</span>' : '<span class="label label-danger">未通过</span>' !!}</td>
                                     <td>{{ $project->review_time }}</td>
                                     <td>
                                         <a class="btn {{ $project->report ? "btn-warning" : "btn-success" }} btn-xs publish-btn" {{ $project->report ? "disabled" : "" }} onclick="{{ $project->report ? "#" : "publish({$project->id})" }}"><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ $project->report ? "已报备" : "报备" }}</a>
-                                        <a href="{{ route('admin.project.edit',['id'=>$project->id]) }}" class="btn btn-white btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
+                                        @if(!$project->report)
+                                            <a href="{{ route('project.edit',['id'=>$project->id]) }}" class="btn btn-white btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
 
-                                        <a class="btn btn-danger btn-xs user-delete" data-href="{{ route('admin.project.destroy',['id'=>$project->id]) }}"><i class="fa fa-trash-o"></i> 删除</a>
-                                    </td>                                    
+                                            <a class="btn btn-danger btn-xs user-delete" data-href="{{ route('project.destroy',['id'=>$project->id]) }}"><i class="fa fa-trash-o"></i> 删除</a>
+                                        @endif
+                                        @if($project->review_status == 1)
+                                                <a href="{{ route('project.uploadEdit',['id'=>$project->id]) }}" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> 上传项目图片</a>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -100,7 +105,7 @@
                 close: true,
                 href: "/project/publish/"+id,
                 successFnc: function () {
-                    window.location.href="{{ route('admin.project.index') }}";
+                    window.location.href="{{ route('project.index') }}";
                     return false;
                 }
             });

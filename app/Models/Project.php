@@ -10,5 +10,5 @@ class Project extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ['category', 'city', 'name', 'business', 'manager', 'model', 'num', 'camera','power','delivery_time','remarks','report', 'report_time', 'files', 'user_id'];
+    protected $fillable = ['category', 'city', 'name', 'business', 'manager', 'model', 'num', 'camera','power','delivery_time','remarks','report', 'report_time', 'files', 'belong_user_id'];
 }

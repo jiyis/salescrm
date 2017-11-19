@@ -10,6 +10,7 @@
 namespace App\Repository;
 
 
+use App\Criteria\MemberCriteria;
 use App\User;
 
 
@@ -21,6 +22,15 @@ class MemberRepository extends BaseRepository
         return User::class;
     }
 
+    /**
+     * Boot up the repository, pushing criteria
+     */
+    public function boot()
+    {
+        parent::boot();
+        $this->pushCriteria(app(MemberCriteria::class));
+
+    }
 
     public function create(array $attributes)
     {
