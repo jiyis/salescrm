@@ -34,7 +34,7 @@ class UserController extends Controller
             $breadcrumbs->push('用户列表', route('admin.users.index'));
         });
 
-        $users = $this->adminUser->paginate(10);
+        $users = $this->adminUser->all();
         return view('admin.rbac.users.index', compact('users'));
     }
 

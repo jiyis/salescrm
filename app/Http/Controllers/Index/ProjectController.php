@@ -30,7 +30,7 @@ class ProjectController extends Controller
             $breadcrumbs->push('项目列表', route('project.index'));
         });
 
-        $projects = $this->project->paginate(10);
+        $projects = $this->project->all();
         return view('index.project.index', compact('projects'));
     }
 

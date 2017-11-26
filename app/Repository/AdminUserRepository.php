@@ -56,11 +56,12 @@ class AdminUserRepository extends BaseRepository
         if(empty($attributes['password'])) unset($attributes['password']);
         $user = parent::update($attributes, $id);
 
+
         if (!empty($attributes['roles'])) {
-            $user->roles()->sync($attributes['roles']);
+            $user->syncRoles($attributes['roles']);
         }
         else {
-            $user->roles()->detach();
+            $user->syncRoles([]);
         }
 
         //$this->model->find($id)->roles()->detach();

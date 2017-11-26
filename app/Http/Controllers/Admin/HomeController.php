@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repository\MemberRepository;
+use App\Repository\ProjectRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -30,6 +32,12 @@ class HomeController extends Controller
             'db_database'     => isset($_SERVER['DB_DATABASE']) ? $_SERVER['DB_DATABASE'] : 'Secret',
             'db_version'      => $version,
         ];
+
+        $data['project_numbers'] = app(ProjectRepository::class)->get()->count();
+        $data['member_numbers'] = app(MemberRepository::class)->get()->count();
+        $data['project_uncheck_numbers'] = app(ProjectRepository::class)->findWhere(['review_status' => null])->count();
+        $data['project_check_numbers'] = app(ProjectRepository::class)->findWhere(['review_status' => 1])->count();
+
 
         return view('admin.home', compact('data'));
     }

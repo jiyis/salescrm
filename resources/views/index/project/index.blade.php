@@ -60,10 +60,18 @@
                                     <td>{{ config('custom.power')[$project->power] }}</td>
                                     <td>{{ $project->delivery_time }}</td>
                                     <!--<td>{{ $project->remarks }}</td>-->
-                                    <td>{!! $project->review_status ? '<span class="label label-success">通过</span>' : '<span class="label label-danger">未通过</span>' !!}</td>
+                                    <td>
+                                        @if($project->review_status ==1)
+                                            <span class="label label-success">通过</span>
+                                        @elseif($project->review_status == 0 && !is_null($project->review_status))
+                                            <span class="label label-danger">未通过</span>
+                                        @elseif(is_null($project->review_status))
+
+                                        @endif
+                                    </td>
                                     <td>{{ $project->review_time }}</td>
                                     <td>
-                                        <a class="btn {{ $project->report ? "btn-warning" : "btn-success" }} btn-xs publish-btn" {{ $project->report ? "disabled" : "" }} onclick="{{ $project->report ? "#" : "publish({$project->id})" }}"><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ $project->report ? "已报备" : "报备" }}</a>
+                                        <a class="btn {{ $project->report ? "btn-warning" : "btn-success" }} btn-xs publish-btn" {{ $project->report ? "disabled" : "" }} onclick="{{ $project->report ? "#" : "publish({$project->id})" }}"><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ $project->report ? "已报备" : "待报备" }}</a>
                                         @if(!$project->report)
                                             <a href="{{ route('project.edit',['id'=>$project->id]) }}" class="btn btn-white btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
 

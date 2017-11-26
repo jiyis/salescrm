@@ -114,7 +114,7 @@
                                     </div>
                                     <!-- 项目审核成功后方可上传，只能上传图片压缩包' -->
                                     <div class="form-group">
-                                        {!! Form::label('files', '图片打包上传',['class'=>'col-sm-2 control-label']) !!}
+                                        {!! Form::label('files', '图片打包上传（只能上传zip或rar）',['class'=>'col-sm-2 control-label']) !!}
                                         <div class="col-sm-6">
                                             <div id="project-files" class="dropzone dropzone-pic" ></div>
                                             {!! Form::hidden('files', old('files'), ['id' => 'userpicval']) !!}
@@ -154,6 +154,11 @@
                             dictRemoveFile: '移除文件',
                             maxFiles: 1,
                             maxFilesize: 20,
+                            dictMaxFilesExceeded: "您最多只能上传1个文件！",
+                            dictResponseError: '文件上传失败!',
+                            dictInvalidFileType: "你不能上传该类型文件,文件类型只能是.rar,.zip,.gz,.7z,.tar.gz.",
+                            dictFallbackMessage:"浏览器不受支持",
+                            dictFileTooBig:"文件过大上传文件最大支持.",
                             //autoDiscover:false,
                             acceptedFiles: ".rar,.zip,.gz,.7z,.tar.gz",
                             sending: function (file, xhr, formData) {
@@ -180,8 +185,10 @@
                                     $('#userpicval').val(result.path);
                                 });
                                 this.on("removedfile", function (file) {
-                                    console.log("上传头像失败");
                                     //toastr.success('上传头像失败');
+                                });
+                                this.on("error", function (file, error) {
+                                    toastr.error(error);
                                 });
                             }
                         });

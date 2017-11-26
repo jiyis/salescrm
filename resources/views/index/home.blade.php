@@ -16,14 +16,14 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3>{{ $data['project_numbers'] }}</h3>
 
-                        <p>New Orders</p>
+                        <p>项目总数</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -31,14 +31,14 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                        <h3>{{ $data['project_uncheck_numbers'] }}</h3>
 
-                        <p>Bounce Rate</p>
+                        <p>待报备项目</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -46,14 +46,14 @@
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3>44</h3>
+                        <h3>{{ $data['project_check_numbers'] }}</h3>
 
-                        <p>User Registrations</p>
+                        <p>审核通过项目</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -61,9 +61,9 @@
                 <!-- small box -->
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3>65</h3>
+                        <h3>{{ $data['project_uncheck_numbers'] }}</h3>
 
-                        <p>Unique Visitors</p>
+                        <p>未通过审核项目</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>

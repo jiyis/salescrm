@@ -73,9 +73,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row">
-                    {!! $roles->render() !!}
-                </div>
+
 
             </div><!-- panel-body -->
         </div><!-- panel -->

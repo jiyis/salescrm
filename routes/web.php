@@ -64,6 +64,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
 
 
 Route::auth();
+Route::get('logout', 'Auth\LoginController@logout');
 
 Route::group(['namespace' => 'Index', 'middleware' => 'auth:web'], function () {
     Route::resource('project', 'ProjectController');

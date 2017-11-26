@@ -44,8 +44,8 @@
                                     </td>
                                     <td>{{ $member->name }}</td>
                                     <td>{{ $member->nickname }}</td>
-                                    <td>{{ $member->name }}</td>
                                     <td>{{ config('custom.category')[$member->category] }}</td>
+                                    <td>{{ $member->email }}</td>
                                     <td>{{ $users[$member->belong_to] }}</td>
                                     <td>{{ $member->created_at }}</td>
                                     <td>

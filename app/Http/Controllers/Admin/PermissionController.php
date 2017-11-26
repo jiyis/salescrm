@@ -40,7 +40,7 @@ class PermissionController extends Controller
             $breadcrumbs->push('权限列表', route('admin.permission.index'));
         });
 
-        $permissions = $this->permission->pushCriteria(new PermissionCriteria())->paginate(10);
+        $permissions = $this->permission->pushCriteria(new PermissionCriteria())->all();
         return view('admin.rbac.permissions.index', compact('permissions'));
     }
 

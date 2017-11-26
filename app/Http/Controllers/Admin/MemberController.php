@@ -33,8 +33,8 @@ class MemberController extends Controller
             $breadcrumbs->push('客户列表', route('admin.member.index'));
         });
 
-        $members = $this->member->paginate(10);
-        $users = $this->adminUser->findWhereIn('id', $members->getCollection()->pluck('belong_to')->toArray())->pluck('nickname', 'id')->toArray();
+        $members = $this->member->all();
+        $users = $this->adminUser->findWhereIn('id', $members->pluck('belong_to')->toArray())->pluck('nickname', 'id')->toArray();
         return view('admin.member.index', compact('members','users'));
     }
 

@@ -85,9 +85,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row">
-                    {!! $users->render() !!}
-                </div>
+
 
             </div><!-- panel-body -->
         </div><!-- panel -->
