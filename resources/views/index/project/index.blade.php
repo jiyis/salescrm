@@ -143,7 +143,8 @@
                 }],
                 //order: [[ 1, "asc" ]],
                 autoWidth: true,
-                "bPaginate": false,
+                "bPaginate": true,
+                bLengthChange: true,
                 language: {
                     url: '/language/datatables-zh.json'
                 }
