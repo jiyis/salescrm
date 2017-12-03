@@ -68,6 +68,7 @@ Route::auth();
 Route::get('logout', 'Auth\LoginController@logout');
 
 Route::group(['namespace' => 'Index', 'middleware' => 'auth:web'], function () {
+    Route::get('project/export',['as'=>'project.export','uses'=>'ProjectController@export']);
     Route::resource('project', 'ProjectController');
     Route::get('project/upload/{id}',['as'=>'project.uploadEdit','uses'=>'ProjectController@uploadEdit']);
     Route::post('project/upload/{id}',['as'=>'project.upload','uses'=>'ProjectController@upload']);

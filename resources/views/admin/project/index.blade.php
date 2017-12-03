@@ -120,14 +120,6 @@
                 }
             });
         }
-        function ToggleCheckboxes() {
-
-            $(this).parents('table').find('.selectall-item').iCheck('check');
-            $('table #selectall').on('ifUnchecked', function(event){
-                $(this).parents('table').find('.selectall-item').iCheck('uncheck');
-            });
-        }
-
 
         //批量导出
         $('.multiexport').click(function () {
