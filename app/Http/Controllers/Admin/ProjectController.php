@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\UpdateProjectRequest;
 use Illuminate\Http\Request;
 use App\Repository\ProjectRepository;
 use Breadcrumbs, Toastr;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectController extends Controller
 {
@@ -224,5 +225,53 @@ class ProjectController extends Controller
         Toastr::error('项目未找到');
 
         return redirect(route('admin.project.index'));
+    }
+
+    /**
+     * 导出项目
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function export(Request $request)
+    {
+
+        $cellData = [
+            ['品类','城市','项目名称','集成商','负责人','型号/数量','镜头/数量','把握度','预计交货日期','审核状态','审核日期','项目备注'],
+        ];
+        if(!($ids = $request->get('ids'))) {
+            return response()->json(['status' => 0, 'msg' => '请求参数错误']);
+        }
+        $ids = explode(',',trim($ids,','));
+        $projects = $this->project->findWhereIn('id', $ids);
+
+        $projects->map(function ($item) use (&$cellData) {
+            if (is_null($item->review_status)) {
+                $review_status = '未审核';
+            } elseif ($item->review_status == 1) {
+                $review_status = '审核通过';
+            } else {
+                $review_status = '审核未通过';
+            }
+            $cellData[] = [
+                config('custom.category')[$item->category],
+                $item->city,
+                $item->name,
+                $item->business,
+                $item->manager,
+                $item->model,
+                $item->camera,
+                config('custom.power')[$item->power],
+                $item->delivery_time,
+                $review_status,
+                $item->review_time,
+                $item->remarks,
+            ];
+        });
+
+        return Excel::create('项目列表',function($excel) use ($cellData){
+            $excel->sheet('报备项目', function($sheet) use ($cellData){
+                $sheet->rows($cellData);
+            });
+        })->download('xlsx');
     }
 }

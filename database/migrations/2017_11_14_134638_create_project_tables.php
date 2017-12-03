@@ -21,8 +21,8 @@ class CreateProjectTables extends Migration
             $table->string('business')->comment("项目操作集成商/总包名称 ");
             $table->string('manager')->comment('负责人');
             $table->text('model')->comment('型号/数量');
-            $table->string('camera')->comment('镜头');
-            $table->string('num')->comment('镜头数量');
+            $table->text('camera')->comment('镜头/数量');
+            //$table->string('num')->comment('镜头数量');
             $table->string('power')->comment('把握度');
             $table->string('delivery_time')->comment('预计交货日期');
             $table->text('remarks')->comment('项目备注')->nullable();

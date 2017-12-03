@@ -15,11 +15,12 @@
                     <div class="box-header with-border">
                         <i class="fa fa-bar-chart-o"></i>
                         <h3 class="box-title">项目列表</h3>
+                        <a class="btn btn-info tooltips multiexport" style="float: right; margin-left: 15px;"><i class="fa fa-share"></i>批量导出</a>
                         <a href="{{ route('admin.project.create') }}" class="btn btn-primary header-btn">新增项目</a>
                     </div>
                     @endif
                     <div class="box-body">
-                        <table class="table table-bordered table-striped datatable">
+                        <table class="table table-responsive" id="datatables">
                             <thead>
                             <tr>
                                 <th>
@@ -100,11 +101,7 @@
 @section('javascript')
     @parent
     <script type="text/javascript">
-        $('input[class!="my-switch"]').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
+
         $(".user-delete").click(function () {
             Rbac.ajax.delete({
                 confirmTitle: '确定删除项目?',
@@ -123,6 +120,48 @@
                 }
             });
         }
+        function ToggleCheckboxes() {
+
+            $(this).parents('table').find('.selectall-item').iCheck('check');
+            $('table #selectall').on('ifUnchecked', function(event){
+                $(this).parents('table').find('.selectall-item').iCheck('uncheck');
+            });
+        }
+
+
+        //批量导出
+        $('.multiexport').click(function () {
+            var ids = [];
+            $(".selectall-item").each(function (e) {
+                if ($(this).prop('checked')) {
+                    ids.push($(this).val());
+                    //ids = ids + ',' + $(this).val();
+                }
+            });
+            ids = ids.join(',');
+            if (ids.length == 0) {
+                swal('请选择需要导出的记录', '', 'warning');
+                return false;
+            }
+            var url = "{{ route('admin.project.export') }}";
+            url = url + '?ids=' + ids;
+            window.location.href = url;
+        })
+
+        $(function(){
+            $('#datatables').dataTable({
+                columnDefs:[{
+                    orderable:false,//禁用排序
+                    'aTargets':[0,3,4,5,6,9]   //指定的列
+                }],
+                //order: [[ 1, "asc" ]],
+                autoWidth: true,
+                "bPaginate": false,
+                language: {
+                    url: '/language/datatables-zh.json'
+                }
+            });
+        })
 
 
     </script>

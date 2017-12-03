@@ -2,6 +2,7 @@ jQuery(document).ready(function () {
     $('#loadpage').fadeOut();
     //列表页全选
     $('table #selectall').on('ifChecked', function(event){
+
         $(this).parents('table').find('.selectall-item').iCheck('check');
     });
     $('table #selectall').on('ifUnchecked', function(event){
@@ -22,15 +23,20 @@ jQuery(document).ready(function () {
     $(".datatable").DataTable({
         columnDefs:[{
             orderable:false,//禁用排序
-            'aTargets':[0,-1]   //指定的列
+            'aTargets':[0,-1],   //指定的列
+          /*  'render': function (data, type, full, meta){
+                return '<input type="checkbox" class="square" id="selectall" />';
+            }*/
         }],
         autoWidth: true,
         //"bPaginate": false,
         language: {
             url: '/language/datatables-zh.json'
         },
+
     });
-    
+
+
     $('.select2').select2();
     $('.select2').css('width','100%');
 

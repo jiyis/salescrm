@@ -57,17 +57,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('camera', '镜头',['class'=>'col-sm-2 control-label']) !!}
+                        {!! Form::label('camera', '镜头/数量',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-4">
-                            {!! Form::text('camera', old('camera'), ['class' => 'form-control','placeholder' => '请填写镜头']) !!}
+                            {!! Form::textarea('camera', old('camera'), ['class' => 'form-control','placeholder' => '请填写型号和数量，如A型号数量3','rows'=>'8']) !!}
                         </div>
                     </div>
-                    <div class="form-group">
+                   <!-- <div class="form-group">
                         {!! Form::label('num', '镜头数量',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-4">
                             {!! Form::text('num', old('num'), ['class' => 'form-control','placeholder' => '请填写镜头数量']) !!}
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         {!! Form::label('power', '把握度',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-4">

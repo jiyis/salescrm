@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::get('logs/ajax',['as'=>'logs.ajax','uses'=>'LogController@ajaxLogs']);
 
     //项目管理
+    Route::get('project/export',['as'=>'project.export','uses'=>'ProjectController@export']);
     Route::resource('project', 'ProjectController');
     Route::get('project/check/{id}',['as'=>'project.check','uses'=>'ProjectController@checkEdit']);
     Route::post('project/check/{id}',['as'=>'project.result','uses'=>'ProjectController@check']);

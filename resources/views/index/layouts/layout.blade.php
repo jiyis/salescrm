@@ -95,6 +95,7 @@
     <script src="/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="/bower_components/select2/dist/js/select2.full.min.js"></script>
     <script src="/plugins/iCheck/icheck.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
     <script src="/plugins/sweetalert/sweetalert.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/dist/js/adminlte.min.js"></script>

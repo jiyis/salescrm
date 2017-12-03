@@ -54,11 +54,12 @@
             line-height: 40px;
             padding: 2px 5px 2px 30px;
             background: none;
+            height: 40px;
         }
 
         .icon_font {
             position: absolute;
-            bottom: 15px;
+            bottom: 12px;
             left: 10px;
             font-size: 18px;
             color: #3872f6;
@@ -111,7 +112,7 @@
 
             <div class="form-group mg-t20 has-feedback">
                 <i class="icon-user icon_font"></i>
-                <input class="login_input" id="Email1" name="username" placeholder="请输入用户名" value="{{ old('username') }}">
+                <input class="login_input" id="Email1" name="username" placeholder="请输入用户名" >
             </div>
             <div class="form-group mg-t20 has-feedback">
                 <i class="icon-lock icon_font"></i>
