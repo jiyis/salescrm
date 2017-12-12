@@ -26,7 +26,7 @@ class UpdateMemberRequest extends Request
                 'required',
                 'integer',
                 Rule::unique('users')->where(function ($query) {
-                    $query->where('name', $this->input('name'));
+                    $query->where('name', $this->input('name'))->whereNull('deleted_at');
                 })->ignore($this->route()->member),
             ],
         ];
