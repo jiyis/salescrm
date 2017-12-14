@@ -2,13 +2,29 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repository\AdminUserRepository;
 use App\Repository\MemberRepository;
 use App\Repository\ProjectRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Breadcrumbs, Toastr, Auth;
 
 class HomeController extends Controller
 {
+
+    public $repository;
+
+    public function __construct(AdminUserRepository $repository)
+    {
+        parent::__construct();
+
+        $this->repository = $repository;
+
+
+        Breadcrumbs::register('admin-home', function ($breadcrumbs) {
+            $breadcrumbs->push('管理中心', route('home'));
+        });
+    }
 
     /**
      * @param Request $request
@@ -41,4 +57,28 @@ class HomeController extends Controller
 
         return view('admin.home', compact('data'));
     }
+
+    public function center()
+    {
+        Breadcrumbs::register('admin-home-center', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin-home');
+            $breadcrumbs->push('个人中心', route('home.center'));
+        });
+
+        $user = $this->repository->find(Auth::guard('admin')->user()->id);
+
+        return view("admin.center", compact('user'));
+    }
+
+    public function update(Request $request)
+    {
+        $data = $request->all();
+
+        $result = $this->repository->update($data, Auth::guard('admin')->user()->id);
+
+        Toastr::success('更新成功.');
+
+        return redirect(route('admin.home'));
+    }
+
 }

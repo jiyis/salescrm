@@ -25,6 +25,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
 
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/center', 'HomeController@center')->name('center');
+    Route::patch('/center', 'HomeController@update')->name('center.update');
 
     //用户设置以及权限
     Route::resource('users', 'UserController');
@@ -75,6 +77,8 @@ Route::group(['namespace' => 'Index', 'middleware' => 'auth:web'], function () {
     Route::post('project/publish/{id}', ['as'=>'project.publish','uses'=>'ProjectController@publish']);
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/center', 'HomeController@center')->name('home.center');
+    Route::patch('/center', 'HomeController@update')->name('home.center.update');
 
     //上传图片
     Route::post('upload/uploadFile','UploadController@uploadFile')->name('upload.uploadfile');

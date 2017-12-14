@@ -27,6 +27,7 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">主要导航</li>
             <li class="{{ \Route::currentRouteName() == 'home' ? "active" : "" }}"><a href="/">管理中心</a> </li>
+            <li class="{{ \Route::currentRouteName() == 'home.center' ? "active" : "" }}"><a href="/center">个人中心</a> </li>
             <li class="treeview {{ \Route::currentRouteName() == 'project.index' ? "active" : "" }}">
                 <a href="#">
                     <span>项目管理</span>
