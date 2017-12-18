@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('nickname')->nullable();
             $table->string('category')->comment("品类");
-            $table->string('email',100)->unique()->nullable();
+            $table->string('email',100)->nullable();
             $table->string('password',100);
             $table->string('ip', 20)->nullable();
             $table->string('last_login_at')->nullable();
