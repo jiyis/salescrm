@@ -83,7 +83,7 @@
                                                         class="fa fa-paper-plane"
                                                         aria-hidden="true"></i> {{ $project->report ? "已报备" : "待报备" }}
                                             </a>
-                                            @if(!$project->report ||  Auth::guard('admin')->user()->is_super)
+                                            @if(Auth::guard('admin')->user()->is_super || !$project->report)
                                                 <a href="{{ route('admin.project.edit',['id'=>$project->id]) }}"
                                                    class="btn btn-white btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
 
