@@ -11,14 +11,17 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    @if(!Auth::guard('admin')->user()->hasRole('checker'))
+
                     <div class="box-header with-border">
                         <i class="fa fa-bar-chart-o"></i>
                         <h3 class="box-title">项目列表</h3>
-                        <a class="btn btn-info tooltips multiexport" style="float: right; margin-left: 15px;"><i class="fa fa-share"></i>批量导出</a>
-                        <a href="{{ route('admin.project.create') }}" class="btn btn-primary header-btn">新增项目</a>
+                        <a class="btn btn-info tooltips multiexport" style="float: right; margin-left: 15px;"><i
+                                    class="fa fa-share"></i>批量导出</a>
+                        @if(!Auth::guard('admin')->user()->hasRole('checker'))
+                            <a href="{{ route('admin.project.create') }}" class="btn btn-primary header-btn">新增项目</a>
+                        @endif
                     </div>
-                    @endif
+
                     <div class="box-body">
                         <table class="table table-responsive" id="datatables">
                             <thead>
@@ -49,7 +52,8 @@
                                 <tr>
                                     <td>
                                         <label>
-                                            <input type="checkbox" class="square selectall-item" name="id" id="id-{{ $project->id }}" value="{{ $project->id }}" />
+                                            <input type="checkbox" class="square selectall-item" name="id"
+                                                   id="id-{{ $project->id }}" value="{{ $project->id }}"/>
                                         </label>
                                     </td>
                                     <td>{{ config('custom.category')[$project->category] }}</td>
@@ -58,39 +62,48 @@
                                     <td>{{ $project->business }}</td>
                                     <td>{{ $project->manager }}</td>
                                     <td>{{ $project->model }}</td>
-                                    <!--<td>{{ $project->num }}</td>
+                                <!--<td>{{ $project->num }}</td>
                                     <td>{{ $project->camera }}</td>-->
                                     <td>{{ config('custom.power')[$project->power] }}</td>
                                     <td>{{ $project->delivery_time }}</td>
-                                    <!--<td>{{ $project->remarks }}</td>-->
+                                <!--<td>{{ $project->remarks }}</td>-->
                                     <td>
                                         @if($project->review_status ==1)
                                             <span class="label label-success">通过</span>
                                         @elseif($project->review_status == 0 && !is_null($project->review_status))
                                             <span class="label label-danger">未通过</span>
-                                        @elseif(is_null($project->review_status))
+                                    @elseif(is_null($project->review_status))
 
-                                        @endif
+                                    @endif
                                     <td>{{ $project->review_time }}</td>
                                     <td>
                                         @if(!Auth::guard('admin')->user()->hasRole('checker'))
-                                        <a class="btn {{ $project->report ? "btn-warning" : "btn-success" }} btn-xs publish-btn" {{ $project->report ? "disabled" : "" }} onclick="{{ $project->report ? "#" : "publish({$project->id})" }}"><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ $project->report ? "已报备" : "待报备" }}</a>
-                                            @if(!$project->report)
-                                                <a href="{{ route('admin.project.edit',['id'=>$project->id]) }}" class="btn btn-white btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
+                                            <a class="btn {{ $project->report ? "btn-warning" : "btn-success" }} btn-xs publish-btn"
+                                               {{ $project->report ? "disabled" : "" }} onclick="{{ $project->report ? "#" : "publish({$project->id})" }}"><i
+                                                        class="fa fa-paper-plane"
+                                                        aria-hidden="true"></i> {{ $project->report ? "已报备" : "待报备" }}
+                                            </a>
+                                            @if(!$project->report && Auth::guard('admin')->user()->is_super)
+                                                <a href="{{ route('admin.project.edit',['id'=>$project->id]) }}"
+                                                   class="btn btn-white btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
 
-                                                <a class="btn btn-danger btn-xs user-delete" data-href="{{ route('admin.project.destroy',['id'=>$project->id]) }}"><i class="fa fa-trash-o"></i> 删除</a>
+                                                <a class="btn btn-danger btn-xs user-delete"
+                                                   data-href="{{ route('admin.project.destroy',['id'=>$project->id]) }}"><i
+                                                            class="fa fa-trash-o"></i> 删除</a>
                                             @endif
                                         @else
-                                         <a href="{{ route('admin.project.check',['id'=>$project->id]) }}" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> 审核</a>
+                                            <a href="{{ route('admin.project.check',['id'=>$project->id]) }}"
+                                               class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> 审核</a>
                                         @endif
                                         @if($project->files)
-                                                <a href="{{ route('admin.project.download',['id'=>$project->id]) }}" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> 下载图片</a>
+                                            <a href="{{ route('admin.project.download',['id'=>$project->id]) }}"
+                                               class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> 下载图片</a>
                                         @endif
-                                    </td>                                    
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
-                        </table>                          
+                        </table>
                     </div>
                 </div>
             </div>
@@ -109,13 +122,14 @@
                 successTitle: '项目删除成功'
             });
         });
+
         function publish(id) {
             Rbac.ajax.request({
                 successTitle: "报备成功!",
                 close: true,
-                href: "/project/publish/"+id,
+                href: "/project/publish/" + id,
                 successFnc: function () {
-                    window.location.href="{{ route('admin.project.index') }}";
+                    window.location.href = "{{ route('admin.project.index') }}";
                     return false;
                 }
             });
@@ -140,11 +154,11 @@
             window.location.href = url;
         })
 
-        $(function(){
+        $(function () {
             $('#datatables').dataTable({
-                columnDefs:[{
-                    orderable:false,//禁用排序
-                    'aTargets':[0,3,4,5,6,9]   //指定的列
+                columnDefs: [{
+                    orderable: false,//禁用排序
+                    'aTargets': [0, 3, 4, 5, 6, 9]   //指定的列
                 }],
                 //order: [[ 1, "asc" ]],
                 autoWidth: true,

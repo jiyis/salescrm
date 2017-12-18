@@ -18,7 +18,7 @@
                             <div class="box-header with-border">
                                 <i class="fa fa-edit"></i>
                                 <h3 class="box-title"> 项目审核</h3>
-                                <a class="btn btn-info tooltips multiexport" style="float: right; margin-left: 15px;"><i class="fa fa-share"></i>批量导出</a>
+
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
