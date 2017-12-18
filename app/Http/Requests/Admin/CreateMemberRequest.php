@@ -15,7 +15,6 @@ class CreateMemberRequest extends Request
             'nickname' => 'string|max:50',
             'email'    => [
                 'required',
-                'unique',
                 Rule::unique('users')->where(function ($query) {
                     $query->where('email', $this->input('email'))->whereNull('deleted_at');
                 }),
