@@ -20,7 +20,13 @@ class UpdateMemberRequest extends Request
         return [
             'name' => 'required|max:20|alpha_dash',
             'nickname' => 'string|max:50',
-            'email' => 'email|unique:users,email,'.$this->member,
+            'email'    => [
+                'required',
+                'unique',
+                Rule::unique('users')->where(function ($query) {
+                    $query->where('email', $this->input('email'))->whereNull('deleted_at');
+                })->ignore($this->route()->member),
+            ],
             'password' => 'sometimes|max:20',
             'category'     => [
                 'required',
