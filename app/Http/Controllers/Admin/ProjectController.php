@@ -236,7 +236,7 @@ class ProjectController extends Controller
     {
 
         $cellData = [
-            ['品类','城市','项目名称','集成商','负责人','型号/数量','镜头/数量','把握度','预计交货日期','审核状态','审核日期','项目备注'],
+            ['品类','城市','项目名称','集成商','负责人','型号/数量','镜头/数量','把握度','预计交货日期','审核状态','审核日期','报备人','项目备注'],
         ];
         if(!($ids = $request->get('ids'))) {
             return response()->json(['status' => 0, 'msg' => '请求参数错误']);
@@ -264,6 +264,7 @@ class ProjectController extends Controller
                 $item->delivery_time,
                 $review_status,
                 $item->review_time,
+                $item->user->name,
                 $item->remarks,
             ];
         });

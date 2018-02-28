@@ -44,6 +44,7 @@
                                 <!--<th>备注</th>-->
                                 <th>审核状态</th>
                                 <th>审核日期</th>
+                                <th>报备人</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -76,6 +77,7 @@
 
                                     @endif
                                     <td>{{ $project->review_time }}</td>
+                                    <td>{{ $project->user->name }}</td>
                                     <td>
                                         @if(!Auth::guard('admin')->user()->hasRole('checker'))
                                             <a class="btn {{ $project->report ? "btn-warning" : "btn-success" }} btn-xs publish-btn"
